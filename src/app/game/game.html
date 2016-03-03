@@ -1,9 +1,37 @@
-<div class="bees-pane">
+<sn-bees-pane>
+  <div class="bee-margin-row">
+    <sn-bee bee="bees[2]"></sn-bee>
+    <sn-bee bee="bees[3]"></sn-bee>
+  </div>
 
-  <div>Hi, wanna play a game?</div>
-  <button>Start Game</button>
+  <div class="bee-middle-row">
+    <sn-bee bee="bees[7]"></sn-bee>
+    <sn-bee bee="bees[8]"></sn-bee>
+    <sn-bee bee="bees[9]"></sn-bee>
+  </div>
 
+  <div class="bee-center-row">
+    <sn-bee bee="bees[4]"></sn-bee>
+    <sn-bee bee="bees[10]"></sn-bee>
+    <sn-bee bee="bees[1]"></sn-bee>
+    <sn-bee bee="bees[11]"></sn-bee>
+  </div>
 
+  <div class="bee-middle-row">
+    <sn-bee bee="bees[12]"></sn-bee>
+    <sn-bee bee="bees[13]"></sn-bee>
+    <sn-bee bee="bees[14]"></sn-bee>
+  </div>
 
+  <div class="bee-margin-row">
+    <sn-bee bee="bees[5]"></sn-bee>
+    <sn-bee bee="bees[6]"></sn-bee>
+  </div>
 
-</div>
+  <sn-popup open="{{beginGamePopupControl}}">
+    <div>Hi, wanna play a game?</div>
+    <button>Start Game</button>
+  </sn-popup>
+</sn-bees-pane>
+
+<button on-click="hitBee()">HIT</button>

@@ -1,13 +1,18 @@
 'use strict';
 
-angular.module('main').directive('bee', [() => {
+angular.module('main').directive('snBee', ['componentsPath', 'bee', 'beeService', (componentsPath, bee, beeService) => {
   return {
     restrict: 'E',
     scope: {
-      type: '@'
+      bee: '='
     },
-    link(scope) {
-
+    templateUrl: componentsPath + 'bee/bee.template.html',
+    link(scope, elm, attrs) {
+      scope.$on('hit-bee', (beeId) => {
+        if (bee.id === beeId) {
+          bee.hit();
+        }
+      });
     }
   };
 }]);
