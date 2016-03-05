@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('main').controller('GameCtrl', ['$scope', '$timeout', 'beeService', ($scope, $timeout, beeService) => {
+export default function($scope, $timeout, beeService) {
+  'ngInject';
+
   $scope.hitBee = () => {
     beeService.hitBee();
   };
@@ -10,4 +12,4 @@ angular.module('main').controller('GameCtrl', ['$scope', '$timeout', 'beeService
   $timeout(() => {
     $scope.beginGamePopupControl = true;
   }, 50);
-}]);
+}

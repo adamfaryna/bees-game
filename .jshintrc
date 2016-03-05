@@ -12,6 +12,7 @@
   "eqnull": true,
   "node": true,
   "esversion": 6,
+  "debug": true,
   "globals": {
     "describe"   : false,
     "it"         : false,

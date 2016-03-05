@@ -1,6 +1,11 @@
 'use strict';
 
-angular.module('main').directive('snPopup', ['$document', 'componentsPath', ($document, componentsPath) => {
+/* exported componentsPath */
+import {componentsPath} from '../../constans';
+
+export default function($document, componentsPath) {
+  'ngInject';
+
   return {
     restrict: 'E',
     transclude: true,
@@ -8,12 +13,10 @@ angular.module('main').directive('snPopup', ['$document', 'componentsPath', ($do
       open: '@'
     },
     templateUrl: componentsPath + 'popup/popup.template.html',
-    link(scope, el, attrs) {
+    link(scope, el) {
       let body = $document.find('body');
 
       scope.$watch('open', (newVal) => {
-        console.log('aaaa');
-
         if (newVal === 'true') {
           el.addClass('show');
           body.addClass('stop-scrolling');
@@ -25,4 +28,4 @@ angular.module('main').directive('snPopup', ['$document', 'componentsPath', ($do
       });
     }
   };
-}]);
+}

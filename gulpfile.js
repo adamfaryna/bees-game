@@ -7,25 +7,34 @@ var babelify          = require('babelify');
 var browserify        = require('browserify');
 var vinylSourceStream = require('vinyl-source-stream');
 var vinylBuffer       = require('vinyl-buffer');
+var vinylPaths        = require('vinyl-paths');
+var del               = require('del');
+var runSequence       = require('run-sequence');
 
 var src = {
   scripts: {
-    app: 'src/app/**/*.js'
+    app: 'src/app/app.es6'
   }
 };
 
 var out = {
   scripts: {
-    file: 'public/app/app.min.js',
+    file: 'app.min.js',
+    sourcemap: './',
     folder: 'public/app/'
   }
 };
 
 gulp.task('lint', () => {
-  return gulp.src(['public/app/**/*.js', 'test/**/*.js', 'gulpfile.js', 'karma.conf.js', '!/**/jquery.js'])
+  return gulp.src(['src/app/**/*.es6', 'test/**/*.es6', 'gulpfile.js', 'karma.conf.js', '!/**/jquery.js'])
     .pipe($.jshint('.jshintrc'))
     .pipe($.jshint.reporter('jshint-stylish'))
     .pipe($.jshint.reporter('fail'));
+});
+
+gulp.task('clean', () => {
+  return gulp.src(['public/app', 'public/images', 'public/css', 'public/index.html'], { read: false })
+    .pipe(vinylPaths(del));
 });
 
 // Compile less into CSS & auto-inject into browsers
@@ -40,24 +49,26 @@ gulp.task('less', () => {
     .pipe(browserSync.stream());
 });
 
-gulp.task('script', ['lint'], () => {
-  var sources = browserify({
-    entries: src.scripts.app,
-    debug: true // Build source maps
-  }).transform(babelify.configure({
-    // You can configure babel here!
-    // https://babeljs.io/docs/usage/options/
-  }));
+gulp.task('scripts', ['lint'], () => {
 
-  return sources.bundle()
+  return browserify({
+      entries: src.scripts.app,
+      paths: ['./src/app'],
+      debug: true,
+      extensions: ['.es6', '.js']
+    })
+    //.add(require.resolve('babel/polyfill'))
+    .transform(babelify.configure({
+      presets: ['es2015', 'react'],
+      plugins: ['transform-runtime']}))
+    .bundle()
     .pipe(vinylSourceStream(out.scripts.file))
     .pipe(vinylBuffer())
     .pipe($.sourcemaps.init({
       loadMaps: true // Load the sourcemaps browserify already generated
     }))
-    .pipe($.ngAnnotate())
-    .pipe($.uglify())
-    .pipe($.sourcemaps.write('./', {
+    .pipe($.ngAnnotate({ single_quotes: true }))
+    .pipe($.sourcemaps.write(out.scripts.sourcemap, {
       includeContent: true
     }))
     .pipe(gulp.dest(out.scripts.folder))
@@ -75,7 +86,7 @@ gulp.task('script', ['lint'], () => {
 //    .pipe(gulp.dest('./test/'));
 //});
 
-gulp.task('inject', () => {
+gulp.task('inject', ['copyPartials'], () => {
   var inject_res = gulp.src(['./public/app/**/*.js', './public/css/**/*.css'], {read: false});
 
   return gulp.src('./public/index.html')
@@ -93,17 +104,19 @@ gulp.task('copyPartials', () => {
 });
 
 // Static Server + watching files
-gulp.task('serve', ['less', 'babel', 'copyPartials', 'inject'], () => { // 'lint'
-  browserSync.init({
-    browser: ['google chrome'],
-    server: 'public/',
-    port: '3000'
-  });
+gulp.task('serve', () => {
+  runSequence('clean', ['less', 'scripts'], 'inject', () => {
+    browserSync.init({
+      browser: ['google chrome'],
+      server: 'public/',
+      port: '3000'
+    });
 
-  gulp.watch('./less/*.less', ['less']);
-  gulp.watch('./src/**/*.es6', ['babel']);
-  gulp.watch('./src/**/*.html', ['copyPartials']);
-  gulp.watch(['./public/**/*.*', '!./public/bower_components']).on('change', browserSync.reload);
+    gulp.watch('./less/*.less', ['less']);
+    gulp.watch('./src/**/*.es6', ['scripts']);
+    gulp.watch('./src/**/*.html', ['copyPartials']);
+    gulp.watch(['./public/**/*.*', '!./public/bower_components']).on('change', browserSync.reload);
+  });
 });
 
 gulp.task('default', ['serve']);
