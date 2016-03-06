@@ -17,24 +17,34 @@ sn-bee {
 
   .img.queen {
     background: transparent url('../images/queen.png') no-repeat top left;
-    width: 125px;
-    height: 133px;
+    width: 70px;
+    height: 74px;
   }
 
   .img.drone {
     background: transparent url('../images/drone.png') no-repeat top left;
-    width: 125px;
-    height: 102px;
+    width: 70px;
+    height: 57px;
   }
 
   .img.worker {
     background: transparent url('../images/worker.png') no-repeat top left;
-    width: 125px;
-    height: 91px;
+    width: 70px;
+    height: 51px;
   }
 
   .bee-label {
-    font-size: 20px;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+}
+
+.controls {
+  text-align: center;
+
+  .hit-button {
+    display: inline-block;
+    font-size: 40px;
   }
 }
 
@@ -60,53 +70,62 @@ sn-bees-pane {
 }
 
 .stop-scrolling {
-  height: 100%;
-  overflow: hidden;
+  //height: 100%;
+  //overflow: hidden;
 }
 
 sn-popup {
-  display: none;
+  display: block;
   position: fixed;
-  opacity: .6;
   outline: 0;
-  z-index: 1050;
+  z-index: 99999;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  overflow: hidden;
-  background-color: grey;
-  text-align: center;
-
-  //transition-property: opacity;
-
-  //.popup-shadow {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  background: rgba(128, 128, 128, 0.6);
+  transition: opacity 400ms ease-in;
 
     dialog {
       display: inline-block;
-      position: relative;
-      background-color: #ffffff;
-      margin: 30px auto;
-      width: 500px;
-      height: 500px;
-      overflow-x: hidden;
-      overflow-y: auto;
+      background: #ffffff;
+      opacity: 1;
+      filter: alpha(opacity=1);
+      margin: 0;
+      padding: 0;
+      width: 400px;
+      height: 120px;
+      top: 50%;
+      left: 50%;
       z-index: 1051;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 5px 15px rgba(0,0,0,.5);
+      border-radius: 6px;
+      border: 1px solid;
 
       .popup-content {
         position: relative;
-        box-shadow: 0 5px 15px rgba(0,0,0,.5);
-        border-radius: 6px;
-        border: 1px solid;
+        height: 100%;
         background-clip: padding-box;
         outline-color: rgb(90, 90, 90);
+
+        header, footer {
+          text-align: center;
+        }
+
+        footer button {
+          display: inline-block;
+        }
       }
     }
-  //}
 }
 
 sn-popup.show {
-  display: block;
+  //display: block;
+  opacity:1;
+  //pointer-events: auto;
 }
 
 

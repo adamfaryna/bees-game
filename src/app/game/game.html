@@ -29,9 +29,10 @@
   </div>
 
   <sn-popup open="{{beginGamePopupControl}}">
-    <div>Hi, wanna play a game?</div>
-    <button>Start Game</button>
+    <h2>Hi, wanna play a game?</h2>
   </sn-popup>
 </sn-bees-pane>
 
-<button on-click="hitBee()">HIT</button>
+<div class="controls">
+  <button class="hit-button" on-click="hitBee()">HIT</button>
+</div>

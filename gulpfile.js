@@ -49,7 +49,7 @@ gulp.task('less', () => {
     .pipe(browserSync.stream());
 });
 
-gulp.task('scripts', ['lint'], () => {
+gulp.task('scripts', () => { // ['lint']
 
   return browserify({
       entries: src.scripts.app,

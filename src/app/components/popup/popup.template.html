@@ -1,5 +1,8 @@
-<!--<div class="popup-shadow">-->
-  <dialog>
-    <div class="popup-content" ng-transclude></div>
-  </dialog>
-<!--</div>-->
+<dialog>
+  <div class="popup-content">
+    <header ng-transclude></header>
+    <footer>
+      <button ng-click="close()">Start Game</button>
+    </footer>
+  </div>
+</dialog>

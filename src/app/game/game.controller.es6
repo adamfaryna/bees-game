@@ -7,6 +7,10 @@ export default function($scope, $timeout, beeService) {
     beeService.hitBee();
   };
 
+  $scope.startGame = () => {
+
+  };
+
   $scope.bees = beeService.getBees();
 
   $timeout(() => {

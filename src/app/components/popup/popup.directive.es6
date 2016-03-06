@@ -6,6 +6,18 @@ import {componentsPath} from '../../constans';
 export default function($document, componentsPath) {
   'ngInject';
 
+  let body = $document.find('body');
+
+  function open() {
+    this.addClass('show');
+    this.addClass('stop-scrolling');
+  }
+
+  function close() {
+    this.removeClass('show');
+    this.removeClass('stop-scrolling');
+  }
+
   return {
     restrict: 'E',
     transclude: true,
@@ -13,17 +25,19 @@ export default function($document, componentsPath) {
       open: '@'
     },
     templateUrl: componentsPath + 'popup/popup.template.html',
-    link(scope, el) {
-      let body = $document.find('body');
+    bindToController: false,
+    controller: ($scope, $element) => {
+      'ngInject'; // jshint ignore:line
 
+      $scope.close = close.bind($element);
+    },
+    link(scope, el) {
       scope.$watch('open', (newVal) => {
         if (newVal === 'true') {
-          el.addClass('show');
-          body.addClass('stop-scrolling');
+          open.bind(el)();
 
         } else {
-          el.removeClass('show');
-          body.removeClass('stop-scrolling');
+          close.bind(el)();
         }
       });
     }
