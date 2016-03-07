@@ -7,4 +7,5 @@ angular.module('main', ['ui.router'])
   .directive('snBee', require('./components/bee/bee.directive').default)
   .directive('snPopup', require('./components/popup/popup.directive').default)
   .controller('GameCtrl', require('./game/game.controller').default)
-  .factory('beeService', require('./service/bee.service').default);
+  .factory('beeService', require('./service/bee.service').default)
+  .service('popupService', require('./service/popup.service').default);

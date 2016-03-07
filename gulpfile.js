@@ -37,7 +37,6 @@ gulp.task('clean', () => {
     .pipe(vinylPaths(del));
 });
 
-// Compile less into CSS & auto-inject into browsers
 gulp.task('less', () => {
   return gulp.src('less/*.less')
     .pipe($.less())
@@ -49,17 +48,15 @@ gulp.task('less', () => {
     .pipe(browserSync.stream());
 });
 
-gulp.task('scripts', () => { // ['lint']
-
+gulp.task('scripts', ['lint'], () => {
   return browserify({
       entries: src.scripts.app,
       paths: ['./src/app'],
       debug: true,
       extensions: ['.es6', '.js']
     })
-    //.add(require.resolve('babel/polyfill'))
     .transform(babelify.configure({
-      presets: ['es2015', 'react'],
+      presets: ['es2015'],
       plugins: ['transform-runtime']}))
     .bundle()
     .pipe(vinylSourceStream(out.scripts.file))
@@ -73,18 +70,7 @@ gulp.task('scripts', () => { // ['lint']
     }))
     .pipe(gulp.dest(out.scripts.folder))
     .pipe(browserSync.stream());
-
-
-  //return gulp.src('src/**/*.es6', { base: 'src' })
-  //  .pipe($.babel())
-  //  .pipe(gulp.dest('./public/'))
-  //  .pipe(browserSync.stream());
 });
-
-//gulp.task('babelTest', () => {
-//  return gulp.src('test/**/*.es6', { base: 'babel/test' })
-//    .pipe(gulp.dest('./test/'));
-//});
 
 gulp.task('inject', ['copyPartials'], () => {
   var inject_res = gulp.src(['./public/app/**/*.js', './public/css/**/*.css'], {read: false});

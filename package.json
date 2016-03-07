@@ -1,8 +1,7 @@
 {
   "name": "bees",
   "version": "1.0.0",
-  "description": "",
-  "main": "gulpfile.js",
+  "description": "The Bee Game",
   "scripts": {
     "start": "gulp serve"
   },

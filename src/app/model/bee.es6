@@ -2,6 +2,10 @@
 
 import {bee} from '../constans';
 
+function isBeeDead(bee) {
+  return bee.life === 0;
+}
+
 export class Bee {
   constructor(id, beeObj) {
     this.id = id;
@@ -10,7 +14,12 @@ export class Bee {
   }
 
   hit() {
-    this.life -= this.spec.damage;
+    this.life -= this.life < this.spec.damage ? this.life : this.spec.damage;
+    return isBeeDead(this);
+  }
+
+  refresh() {
+    this.life = this.spec.life;
   }
 }
 

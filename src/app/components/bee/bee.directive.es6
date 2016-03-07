@@ -1,8 +1,8 @@
 'use strict';
-/* exported componentsPath, bee */
-import {componentsPath, bee} from '../../constans';
+/* exported componentsPath */
+import {componentsPath} from '../../constans';
 
-export default function(componentsPath, bee) {
+export default function(componentsPath) {
   'ngInject';
 
   return {
@@ -11,10 +11,15 @@ export default function(componentsPath, bee) {
       bee: '='
     },
     templateUrl: componentsPath + 'bee/bee.template.html',
-    link(scope) {
-      scope.$on('hit-bee', (beeId) => {
-        if (bee.id === beeId) {
-          bee.hit();
+    link(scope, element) {
+      let imgElem = $('.img', element);
+
+      scope.$watch('bee.life', (newValue) => {
+        if (newValue === 0) {
+          imgElem.addClass('dead');
+
+        } else {
+          imgElem.removeClass('dead');
         }
       });
     }

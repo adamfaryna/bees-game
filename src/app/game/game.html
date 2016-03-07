@@ -28,11 +28,7 @@
     <sn-bee bee="bees[6]"></sn-bee>
   </div>
 
-  <sn-popup open="{{beginGamePopupControl}}">
-    <h2>Hi, wanna play a game?</h2>
-  </sn-popup>
+  <div class="controls">
+    <button type="button" class="btn btn-lg btn-default hit-button" ng-click="hitBee()">HIT</button>
+  </div>
 </sn-bees-pane>
-
-<div class="controls">
-  <button class="hit-button" on-click="hitBee()">HIT</button>
-</div>
